@@ -8,7 +8,8 @@
 const React = require('react');
 
 const {Tooltip, Legend} = require('recharts');
-
+import { Scrollbars } from 'react-custom-scrollbars';
+import DefaultLegendContent from 'recharts/lib/component/DefaultLegendContent';
 const {sameToneRangeColors} = require('../../utils/ColorUtils');
 const charts = {
    line: require('./Line'),
@@ -39,10 +40,30 @@ const SimpleChart = ({type="line", tooltip = {}, legend = {}, autoColorOptions =
         const {base, range, ...opts} = colorOptions;
         return (sameToneRangeColors(base, range, total + 1, opts) || [0]).slice(1);
     };
-    return (<Component margin={{top: 5, right: 30, left: 20, bottom: 5}} colorGenerator={colorGenerator || defaultColorGenerator} autoColorOptions={autoColorOptions} {...props} {...{legend, tooltip}}>
+    const ratio= props.width/props.height
+
+    const scrollableLegend = (props) => {
+
+
+        return (  props.ChartWidth < 200  && ratio >= 1
+        || props.ChartHeight < 200  && ratio < 1 ?
+         null:
+            <Scrollbars
+
+                autoHeight
+
+            >
+                <DefaultLegendContent {...props} />
+            </Scrollbars>
+        );
+    };
+
+    return (<div>
+    <Component margin={{top: 5, right: 30, left: 20, bottom: 5}} colorGenerator={colorGenerator || defaultColorGenerator} autoColorOptions={autoColorOptions} {...props} {...{legend, tooltip}}>
       {tooltip !== false ? <Tooltip {...tooltip}/> : null}
-      {legend !== false ? <Legend {...legend}/> : null}
+      {legend !== false ? charts[type] == charts.pie ? <Legend align="right" layout="vertical" wrapperStyle = { {position: "absolute"}} content={scrollableLegend} {...legend}/> : <Legend {...legend} /> : null}
      </Component>
+     </div>
    );
 };
 
