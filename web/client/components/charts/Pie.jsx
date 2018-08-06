@@ -20,18 +20,6 @@ module.exports = pure(({isAnimationActive, width = 600, height = 300, data, seri
         cx: (i % cols + 0.5) * cellWidth,
         cy: (Math.floor(i / cols) + 0.5) * cellHeight
     }));
-    const RADIAN = Math.PI / 180;
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
- 	const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x  = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy  + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-    	{`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
     const cells = data.map( (emtry, i) => <Cell key={`cell-${i}`}fill={COLORS[i]} />);
     return (<PieChart width={width} height={height} data={data}>
         {
@@ -40,12 +28,8 @@ module.exports = pure(({isAnimationActive, width = 600, height = 300, data, seri
                      {...centers[i]}
                      data={convertToNameValue({name: xAxis && xAxis.dataKey || serie.name, value: serie.dataKey || serie.value}, data)}
                      {...serie}
-                     outerRadius={Math.min(cellWidth / 2, cellHeight / 2)}
-                     labelLine={false}
-                     label={renderCustomizedLabel}>
+                     outerRadius={Math.min(cellWidth / 2, cellHeight / 2)}>
                      {cells}
-
-
                  </Pie>))
          }
         {props.children}
