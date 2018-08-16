@@ -241,7 +241,7 @@ class Catalog extends React.Component {
             }
         }
         if (this.props.mode === "edit") {
-            buttons.push(<Button style={this.props.buttonStyle} disabled={this.props.saving} onClick={() => this.props.onAddService()} key="catalog_add_service_button">
+            buttons.push(<Button style={this.props.buttonStyle} disabled={this.props.saving} onClick={() => this.addingData()} key="catalog_add_service_button">
                         {this.renderSaving()} <Message msgId="save"/>
                     </Button>);
             if (!this.props.newService.isNew) {
@@ -374,7 +374,10 @@ class Catalog extends React.Component {
                 </Form>)
         );
     }
-
+    addingData = () => {
+        this.setState({searchText: ''});
+        this.props.onAddService();
+    };
     isValidServiceSelected = () => {
         return this.props.services[this.props.selectedService] !== undefined;
     };
