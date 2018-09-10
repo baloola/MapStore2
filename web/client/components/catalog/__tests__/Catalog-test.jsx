@@ -23,7 +23,7 @@ describe('Tests for Catalog', () => {
         setTimeout(done);
     });
 
-    it('create catalog', () => {
+    it('create a catalog component', () => {
 
         const component = ReactDOM.render(<Catalog />, document.getElementById('container'));
         expect(component).toExist();
