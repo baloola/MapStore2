@@ -71,15 +71,17 @@ function mapConfig(state = null, action) {
             return assign({}, state, {map: map});
         }
         return state;
-    case MAP_CREATED: {
-        map = state && state.map && state.map.present ? state.map.present : state && state.map;
-        if (map) {
-            const {name, description, canDelete = false, canCopy = false, canEdit= false} = action.metadata || {};
-            // version needed to avoid automapupdate to start
-            map = assign({}, map, {mapId: action.resourceId, info: {...map.info, name, description, canEdit, canDelete, canCopy}, version: 2});
-            return assign({}, state, {map: map});
+        case MAP_CREATED: {
+            map = state && state.map && state.map.present ? state.map.present : state && state.map;
+            let mapInitialConfig = state && state.mapInitialConfig && state.mapInitialConfig
+            if (map) {
+                const {name, description, canDelete = false, canCopy = false, canEdit= false} = action.metadata || {};
+                // version needed to avoid automapupdate to start
+                map = assign({}, map, {mapId: action.resourceId, info: {...map.info, name, description, canEdit, canDelete, canCopy}, version: 2});
+                mapInitialConfig = assign({}, mapInitialConfig, {mapId: action.resourceId});
+                return assign({}, state, {map: map, mapInitialConfig: mapInitialConfig});
+            }
         }
-    }
     default:
         return state;
     }
