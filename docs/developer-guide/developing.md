@@ -69,26 +69,20 @@ By default `npm start` runs a dev server connected to the mapstore 2 online demo
 If you want to use your own local test back-end you have to:
 
 1. run `mvn jetty:run` - it makes run the mapstore back-end locally (port 8080), ìn memory db - By default 2 users
-    * `admin` password `admin`
-    * `user` with password `user`
+  - `admin` password `admin`
+  - `user` with password `user`
 
 2. Setup client to use the local back-end, apply this changes to `buildConfig.js` (at the devServer configuration)
-
-    ```Javascript
-    devServer: {
-            proxy: {
-                '/rest/': {
-                    target: "http://localhost:8080"
-                },
-                '/proxy': {
-                    target: "http://localhost:8080",
-                    secure: false
-                },
-                '/docs': { // this can be used when you run npm run doctest
-                    target: "http://localhost:8081",
-                    pathRewrite: { '/docs': '/mapstore/docs' }
-                }
-            }
+```Javascript
+devServer: {
+    proxy: {
+        '/mapstore/rest/': {
+            target: "http://localhost:8080",
+            pathRewrite: {'/mapstore/rest/': '/rest/'}
+        },
+        '/mapstore/proxy': {
+            target: "http://localhost:8080",
+            pathRewrite: {'/mapstore/proxy': '/proxy'}
         },
         // ...
     ```

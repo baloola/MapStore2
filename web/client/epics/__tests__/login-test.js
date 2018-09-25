@@ -9,8 +9,8 @@
 const expect = require('expect');
 const {INIT_CATALOG} = require('../../actions/catalog');
 const {SET_CONTROL_PROPERTY} = require('../../actions/controls');
-const { loginSuccess, logout, logoutWithReload} = require('../../actions/security');
-const { initCatalogOnLoginOutEpic, promtLoginOnMapError, reloadMapConfig} = require('../login');
+const {loginSuccess, logout, logoutWithReload} = require('../../actions/security');
+const {initCatalogOnLoginOutEpic, reloadMapConfig, promtLoginOnMapError} = require('../login');
 const {configureError} = require('../../actions/config');
 
 

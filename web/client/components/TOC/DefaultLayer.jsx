@@ -10,17 +10,12 @@ const React = require('react');
 const PropTypes = require('prop-types');
 const Node = require('./Node');
 const {isObject} = require('lodash');
-const {castArray, find} = require('lodash');
-const { Grid, Row, Col, Glyphicon} = require('react-bootstrap');
+const { Grid, Row, Col} = require('react-bootstrap');
 const VisibilityCheck = require('./fragments/VisibilityCheck');
 const Title = require('./fragments/Title');
 const WMSLegend = require('./fragments/WMSLegend');
 const LayersTool = require('./fragments/LayersTool');
 const OpacitySlider = require('./fragments/OpacitySlider');
-const withTooltip = require('../data/featuregrid/enhancers/withTooltip');
-const localizedProps = require('../misc/enhancers/localizedProps');
-
-const GlyphIndicator = localizedProps('tooltip')(withTooltip(Glyphicon));
 
 class DefaultLayer extends React.Component {
     static propTypes = {

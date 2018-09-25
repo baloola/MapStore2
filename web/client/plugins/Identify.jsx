@@ -165,7 +165,8 @@ const IdentifyPlugin = compose(
     connect(selector, {
         sendRequest: getFeatureInfo,
         localRequest: getVectorInfo,
-        purgeResults: closeIdentify,
+        purgeResults: conditionalToggle,
+        closeIdentify,
         changeMousePointer,
         showMarker: showMapinfoMarker,
         noQueryableLayers,

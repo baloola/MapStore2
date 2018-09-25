@@ -20,8 +20,7 @@ const urlParts = (url) => {
     urlPartsArray[4] = urlPartsArray[4] === "" || !urlPartsArray[4] ? (urlPartsArray[1] === "https:" ? "443" : "80") : urlPartsArray[4];
     urlPartsArray[5] = urlPartsArray[5] ? urlPartsArray[5] : url.slice(urlPartsArray[0].length);
     const [, protocol, , domain, port, rootPath] = urlPartsArray;
-    const applicationRootPath = rootPath.indexOf('/') === 0 ? rootPath.split('/')[1] : '';
-    return {protocol, domain, port, rootPath, applicationRootPath};
+    return {protocol, domain, port, rootPath};
 };
 
 /**

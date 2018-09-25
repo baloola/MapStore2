@@ -209,14 +209,6 @@ function updateCenterToMarker(status) {
     };
 }
 
-function featureInfoClick(point, layer) {
-    return {
-        type: FEATURE_INFO_CLICK,
-        point,
-        layer
-    };
-}
-
 const closeIdentify = () => ({
     type: CLOSE_IDENTIFY
 });
