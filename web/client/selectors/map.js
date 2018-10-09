@@ -29,7 +29,8 @@ const mapSelector = (state) => state.map && state.map.present || state.map || st
 const projectionDefsSelector = (state) => state.localConfig && state.localConfig.projectionDefs || [];
 
 const projectionSelector = createSelector([mapSelector], (map) => map && map.projection);
-const mapIdSelector = (state) => get(state, "mapInitialConfig.mapId") && parseInt(get(state, "mapInitialConfig.mapId"), 10) || null;
+const mapIdSelector = (state) => get(mapSelector(state),"mapId") && parseInt(get(mapSelector(state),"mapId")) || null;
+const InitialMapIdSelector = (state) => get(state, "mapInitialConfig.mapId") && parseInt(get(state, "mapInitialConfig.mapId"), 10) || null;
 const mapInfoDetailsUriFromIdSelector = (state) => mapSelector(state) && mapSelector(state).info && mapSelector(state).info.details;
 
 /**
@@ -71,6 +72,7 @@ const mapNameSelector = (state) => state.map && state.map.present && state.map.p
 module.exports = {
     mapInfoDetailsUriFromIdSelector,
     mapSelector,
+    InitialMapIdSelector,
     scalesSelector,
     projectionSelector,
     mapIdSelector,
