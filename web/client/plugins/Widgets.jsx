@@ -11,6 +11,7 @@ const {connect} = require('react-redux');
 const {createSelector} = require('reselect');
 const { compose, withProps} = require('recompose');
 const {mapIdSelector} = require('../selectors/map');
+const {isCesium} = require('../selectors/maptype');
 const {getFloatingWidgets, dependenciesSelector, getFloatingWidgetsLayout} = require('../selectors/widgets');
 const { editWidget, updateWidgetProperty, deleteWidget, changeLayout, exportCSV, exportImage} = require('../actions/widgets');
 const {rightPanelOpenSelector, bottomPanelOpenSelector} = require('../selectors/maplayout');
@@ -82,13 +83,13 @@ class Widgets extends React.Component {
 
 const WidgetsPlugin = connect(
     createSelector(
+        rightPanelOpenSelector,
+        bottomPanelOpenSelector,
+        isCesium,
 
-        // we need to remove this selector when the widget view is resizable with the map layout
-        state => rightPanelOpenSelector(state) || bottomPanelOpenSelector(state),
-        //
 
-        (checkPanel) => ({
-            enabled: !checkPanel
+        (rightPanel, bottomPanel, cesium) => ({
+            enabled: !rightPanel && !bottomPanel && !cesium
         })
     )
 )(Widgets);
