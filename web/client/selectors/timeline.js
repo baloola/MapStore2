@@ -5,6 +5,7 @@ const moment = require('moment');
 const { timeDataSelector, currentTimeSelector } = require('../selectors/dimension');
 const {getLayerFromId} = require('../selectors/layers');
 const rangeSelector = state => get(state, 'timeline.range');
+
 const rangeDataSelector = state => get(state, 'timeline.rangeData');
 
 // items
@@ -129,7 +130,15 @@ const selectedLayerData = state => getLayerFromId(state, selectedLayerSelector(s
 const selectedLayerName = state => selectedLayerData(state) && selectedLayerData(state).name;
 const selectedLayerUrl = state => selectedLayerData(state) && selectedLayerData(state).dimensions && selectedLayerData(state).dimensions.filter((x) => x.name === "time").map((l) => l.source.url);
 
+const histogramTimeRange = (state) => {
+    const histogramRange = rangeDataSelector(state)
+    const selectedLayer = selectedLayerSelector(state)
+    return histogramRange && selectedLayer && histogramRange[selectedLayer].histogram && histogramRange[selectedLayer].histogram.domain
+    && histogramRange[selectedLayer].histogram.domain.split('/') ||  [];
+}
+
 module.exports = {
+    histogramTimeRange,
     itemsSelector,
     rangeSelector,
     loadingSelector,

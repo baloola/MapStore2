@@ -16,7 +16,7 @@ const {
 } = require('../actions/dimension');
 const { LOCATION_CHANGE } = require('react-router-redux');
 
-const { currentFrameSelector, currentFrameValueSelector, lastFrameSelector} = require('../selectors/playback');
+const { currentFrameSelector, currentFrameValueSelector, lastFrameSelector, playbackRangeSelector} = require('../selectors/playback');
 const {selectedLayerName, selectedLayerUrl} = require('../selectors/timeline');
 
 const pausable = require('../observables/pausable');
@@ -42,7 +42,9 @@ const domainArgs = (getState, paginationOptions = {}) => {
 module.exports = {
     retrieveFramesForPlayback: (action$, { getState = () => { } } = {}) =>
         action$.ofType(PLAY).exhaustMap( () =>
-            getDomainValues(...domainArgs(getState))
+            getDomainValues(...domainArgs(getState, {
+                fromValue: playbackRangeSelector(getState()).startPlaybackTime
+            }))
                 .map(res => res.DomainValues.Domain.split(","))
                 .map((frames) => setFrames(frames))
                 .let(wrapStartStop(framesLoading(true), framesLoading(false)))

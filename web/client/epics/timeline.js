@@ -8,7 +8,7 @@ const { setCurrentTime, UPDATE_LAYER_DIMENSION_DATA } = require('../actions/dime
 
 
 const {getLayerFromId} = require('../selectors/layers');
-const { rangeSelector, offsetEnabledSelector, offsetTimeSelector, selectedLayerName, selectedLayerUrl } = require('../selectors/timeline');
+const { rangeSelector, offsetEnabledSelector, offsetTimeSelector, selectedLayerName, selectedLayerUrl,histogramTimeRange } = require('../selectors/timeline');
 const { layerTimeSequenceSelectorCreator, timeDataSelector, layersWithTimeDataSelector } = require('../selectors/dimension');
 
 const { getNearestDate, roundRangeResolution, isTimeDomainInterval } = require('../utils/TimeUtils');
@@ -27,7 +27,6 @@ const domainArgs = (state, paginationOptions = {}) => {
 
     const layerName = selectedLayerName(state);
     const layerUrl = selectedLayerUrl(state);
-
     return [layerUrl, layerName, "time", {
         limit: 1,
         ...paginationOptions
