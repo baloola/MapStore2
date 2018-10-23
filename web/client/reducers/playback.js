@@ -32,7 +32,7 @@ module.exports = (state = { status: STATUS.STOP, currentFrame: -1}, action) => {
             return set('currentFrame', action.frame, state);
         }
         case SELECT_PLAYBACK_RANGE: {
-            return set('playbackRange', action.range, state);
+            return set('playbackRange', Object.keys(action.range).length !== 0 && action.range, state);
         }
         default:
             return state;

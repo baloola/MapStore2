@@ -54,7 +54,7 @@ module.exports = (state = {}, action) => {
         case RANGE_DATA_LOADED: {
             return set(`rangeData[${action.layerId}]`, {
                 range: action.range,
-                histogram: action.histogram !== undefined && action.histogram,
+                histogram: action.histogram,
                 domain: action.domain
             }, state);
         }

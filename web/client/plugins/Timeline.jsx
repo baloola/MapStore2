@@ -13,7 +13,7 @@ const Timeline = require('./timeline/Timeline');
 const InlineDateTimeSelector = require('./timeline/InlineDateTimeSelector');
 const Toolbar = require('../components/misc/toolbar/Toolbar');
 const { currentTimeSelector } = require('../selectors/dimension');
-const { offsetEnabledSelector, calculateOffsetTimeSelector } = require('../selectors/timeline');
+const { offsetEnabledSelector, calculateOffsetTimeSelector, selectedLayerSelector } = require('../selectors/timeline');
 const { withState, compose } = require('recompose');
 const { selectTime, enableOffset, selectOffset } = require('../actions/timeline');
 const { selectPlaybackRange } = require('../actions/playback');
@@ -33,11 +33,13 @@ const isValidOffset = (start, end) => moment(end).diff(start) > 0;
 const TimelinePlugin = compose(
     connect(
         createSelector(
+            selectedLayerSelector,
             currentTimeSelector,
             calculateOffsetTimeSelector,
             offsetEnabledSelector,
             playbackRangeSelector,
-            (currentTime, calculateOffsetTime, offsetEnabled, playbackRange) => ({
+            (selectedLayer, currentTime, calculateOffsetTime, offsetEnabled, playbackRange) => ({
+                selectedLayer,
                 currentTime,
                 calculateOffsetTime,
                 offsetEnabled,
@@ -52,6 +54,7 @@ const TimelinePlugin = compose(
     withState('options', 'setOptions', {})
 )(
     ({
+        selectedLayer,
         items,
         options,
         setOptions,
@@ -119,7 +122,7 @@ const TimelinePlugin = compose(
                             bsStyle: !hideLayersName ? 'success' : 'primary',
                             visible: !collapsed,
                             active: !hideLayersName,
-                            onClick: () => setOptions({ ...options, hideLayersName: !hideLayersName })
+                            onClick: () => selectedLayer && setOptions({ ...options, hideLayersName: !hideLayersName })
                         },
                         {
                             glyph: 'time-offset',
@@ -127,8 +130,8 @@ const TimelinePlugin = compose(
                             active: offsetEnabled,
                             tooltip: offsetEnabled ? 'Disable current time with offset' : 'Enable current time with offset',
                             onClick: () => {
-                                onOffsetEnabled(!offsetEnabled);
-                                setOptions({ ...options, playbackEnabled: false });
+                                selectedLayer && onOffsetEnabled(!offsetEnabled);
+                                selectedLayer && setOptions({ ...options, playbackEnabled: false });
                             }
                         },
                         {
@@ -138,9 +141,9 @@ const TimelinePlugin = compose(
                             active: playbackEnabled,
                             visible: !!Playback,
                             onClick: () => {
-                                onOffsetEnabled(false);
-                                setOptions({ ...options, playbackEnabled: !playbackEnabled });
-                                setPlaybackRange(playbackRange);
+                                selectedLayer &&  onOffsetEnabled(false);
+                                selectedLayer && setOptions({ ...options, playbackEnabled: !playbackEnabled });
+                                selectedLayer && setPlaybackRange(playbackRange);
                             }
                         }
                     ]} />
